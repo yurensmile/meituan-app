@@ -138,16 +138,6 @@
           display: none;
           text-align: left;
 
-          &:before {
-            content: ' ';
-            display: block;
-            width: 76px;
-            height: 4px;
-            background: #fff;
-            position: absolute;
-            top: -1px;
-            right: 0;
-          }
 
           >dl {
             box-sizing: border-box;
