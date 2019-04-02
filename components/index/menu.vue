@@ -63,7 +63,7 @@ export default {
       clearTimeout(this._timer)
     },
     sout: function() {
-      self.kind = ''
+      this.kind = ''
     }
   }
 }
