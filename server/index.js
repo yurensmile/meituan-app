@@ -1,4 +1,5 @@
 import Koa from 'koa'
+import koaBody from 'koa-body'
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 
@@ -27,6 +28,7 @@ async function start() {
     await nuxt.ready()
   }
 
+  app.use(koaBody())
   app.use(users.routes()).use(users.allowedMethods())
   app.use(ctx => {
     ctx.status = 200
