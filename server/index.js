@@ -1,6 +1,8 @@
-const Koa = require('koa')
+import Koa from 'koa'
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
+
+import users from './interface/users'
 
 const app = new Koa()
 
@@ -25,6 +27,7 @@ async function start() {
     await nuxt.ready()
   }
 
+  app.use(users.routes()).use(users.allowedMethods())
   app.use(ctx => {
     ctx.status = 200
     ctx.respond = false // Bypass Koa's built-in response handling

@@ -43,7 +43,7 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    // '@nuxtjs/pwa'
   ],
   /*
    ** Axios module configuration
@@ -56,7 +56,7 @@ module.exports = {
    ** Build configuration
    */
   build: {
-    transpile: [/^element-ui/],
+    // transpile: [/^element-ui/],
 
     /*
      ** You can extend webpack config here
@@ -76,6 +76,6 @@ module.exports = {
         })
       }
     },
-    cache: true
+    cache: false
   }
 }

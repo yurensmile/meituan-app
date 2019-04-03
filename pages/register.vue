@@ -133,7 +133,6 @@ export default {
       if (self.timerid) {
         return false
       }
-      console.log(self.$refs.ruleForm)
       self.$refs.ruleForm.validateField('name', valid => {
         namePass = valid
       })
