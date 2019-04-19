@@ -9,6 +9,7 @@
       <el-col :span="15" class="center">
         <div class="wrapper">
           <el-input
+            v-model="search"
             placeholder="搜索商家或地点"
             @focus="focus"
             @blur="blur"
@@ -19,17 +20,26 @@
           </button>
           <dl v-if="isHotPlace" class="hotPlace">
             <dt>热门搜索</dt>
-            <dd v-for="(item, idx) in hotPlace" :key="idx">{{ item }}</dd>
+            <dd
+              v-for="(item, idx) in $store.state.home.hotPlace.slice(0, 5)"
+              :key="idx"
+            >
+              {{ item.name }}
+            </dd>
           </dl>
           <dl v-if="isSearchList" class="searchList">
-            <dd v-for="(item, idx) in searchList" :key="idx">{{ item }}</dd>
+            <dd v-for="(item, idx) in searchList" :key="idx">
+              {{ item.name }}
+            </dd>
           </dl>
         </div>
         <p class="suggest">
-          <a href="#">青小园</a>
-          <a href="#">青小园</a>
-          <a href="#">青小园</a>
-          <a href="#">青小园</a>
+          <a
+            v-for="(item, idx) in $store.state.home.hotPlace.slice(0, 5)"
+            :key="idx"
+          >
+            {{ item.name }}
+          </a>
         </p>
         <ul class="nav">
           <li>
@@ -71,11 +81,12 @@
 </template>
 
 <script>
+import _ from 'lodash'
 export default {
   data() {
     return {
-      hotPlace: ['日本', '青岛', '海南'],
-      searchList: ['雪糕', '雪糕', '雪糕'],
+      hotPlace: [],
+      searchList: [],
       isFocus: false,
       search: ''
     }
@@ -95,9 +106,23 @@ export default {
     blur: function() {
       this.isFocus = false
     },
-    input: function() {
-      console.log('yyyyy')
-    }
+    input: _.debounce(async function() {
+      const self = this
+      const city = self.$store.state.geo.position.city.replace('市', '')
+      self.searchList = []
+      const {
+        status,
+        data: { top }
+      } = await self.$axios.get('search/top', {
+        params: {
+          input: self.search,
+          city
+        }
+      })
+      if (status === 200) {
+        self.searchList = top.slice(0, 10)
+      }
+    }, 200)
   }
 }
 </script>

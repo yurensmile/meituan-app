@@ -1,68 +1,129 @@
 <template>
-  <div class="m-artistic">
-    <dl v-for="(item, idx) in artistics" :key="idx" @mouseenter="enter">
-      <dt :class="item.type">{{ item.name }}</dt>
-      <div v-if="kind">
-        <template v-for="(hotel, i) in item.children">
-          <img :key="i" :src="hotel.img" alt="hahahh" />
-        </template>
-      </div>
+  <section class="m-istyle">
+    <dl @mouseover="over">
+      <dt>有格调</dt>
+      <dd :class="{ active: kind === 'all' }" kind="all" keyword="景点">
+        全部
+      </dd>
+      <dd :class="{ active: kind === 'part' }" kind="part" keyword="美食">
+        约会聚餐
+      </dd>
+      <dd :class="{ active: kind === 'spa' }" kind="spa" keyword="丽人">
+        丽人SPA
+      </dd>
+      <dd :class="{ active: kind === 'movie' }" kind="movie" keyword="电影">
+        电影演出
+      </dd>
+      <dd :class="{ active: kind === 'travel' }" kind="travel" keyword="旅游">
+        品质出游
+      </dd>
     </dl>
-  </div>
+    <ul class="ibody">
+      <li v-for="item in cur" :key="item.title">
+        <el-card :body-style="{ padding: '0px' }" shadow="never">
+          <img :src="item.img" class="image" />
+          <ul class="cbody">
+            <li class="title">{{ item.title }}</li>
+            <li class="pos">
+              <span>{{ item.pos }}</span>
+            </li>
+            <li class="price">
+              ￥<em>{{ item.price }}</em>
+            </li>
+          </ul>
+        </el-card>
+      </li>
+    </ul>
+  </section>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      kind: '',
-      artistics: [
-        {
-          type: 'date',
-          name: '约会聚餐',
-          children: [
-            {
-              img:
-                'http://p0.meituan.net/msmerchant/f271cc526b6ad104ccd0f849f0317e42320376.jpg@552w_312h_1e_1c'
-            },
-            {
-              img:
-                'http://p1.meituan.net/msmerchant/86a89e16649fe2f1444b46d9497f4f26172723.jpg@552w_312h_1e_1c'
-            },
-            {
-              img:
-                'http://p0.meituan.net/msmerchant/f682553974f941fb5f616991dc65876b1319400.jpg@552w_312h_1e_1c'
-            }
-          ]
-        },
-        {
-          type: 'SPA',
-          name: '丽人SPA',
-          children: [
-            {
-              img:
-                'http://p0.meituan.net/deal/cc3eecb02b38562290bb72ad5758944f68974.jpg@240w_180h_1e_1c_1l%7Cwatermark=1&&r=2&p=9&x=2&y=2&relative=1&o=20%7C552w_312h_1e_1c'
-            },
-            {
-              img:
-                'http://p0.meituan.net/merchantpic/031973b3029e341f8e46775259d48a3b361560.jpg@240w_180h_1e_1c_1l%7Cwatermark=1&&r=2&p=9&x=2&y=2&relative=1&o=20%7C552w_312h_1e_1c'
-            }
-          ]
-        }
-      ]
+      kind: 'all',
+      list: {
+        all: [],
+        part: [],
+        spa: [],
+        movie: [],
+        travel: []
+      }
     }
   },
   computed: {
-    childitem: function() {
-      return this.artistics.filter(item => this.kind === item.type)
+    cur: function() {
+      return this.list[this.kind]
     }
   },
+  async mounted() {
+    const self = this
+    const {
+      status,
+      data: { count, pois }
+    } = await self.$axios.get('/search/resultsByKeywords', {
+      params: {
+        keyword: '景点',
+        city: self.$store.state.geo.position.city
+      }
+    })
+    if (status === 200 && count > 0) {
+      const r = pois
+        .filter(item => item.photos.length)
+        .map(item => {
+          return {
+            title: item.name,
+            pos: item.type.split(';')[0],
+            price: item.biz_ext.cost || '暂无',
+            img: item.photos[0].url,
+            url: '//abc.com'
+          }
+        })
+      self.list[self.kind] = r.slice(0, 9)
+    } else {
+      self.list[self.kind] = []
+    }
+  },
+
   methods: {
-    enter: function(e) {
-      this.kind = e.target.querySelector('dt').className
+    over: async function(e) {
+      const dom = e.target
+      const tag = dom.tagName.toLowerCase()
+      const self = this
+      if (tag === 'dd') {
+        this.kind = dom.getAttribute('kind')
+        const keyword = dom.getAttribute('keyword')
+        const {
+          status,
+          data: { count, pois }
+        } = await self.$axios.get('/search/resultsByKeywords', {
+          params: {
+            keyword,
+            city: self.$store.state.geo.position.city
+          }
+        })
+        if (status === 200 && count > 0) {
+          const r = pois
+            .filter(item => item.photos.length)
+            .map(item => {
+              return {
+                title: item.name,
+                pos: item.type.split(';')[0],
+                price: item.biz_ext.cost || '暂无',
+                img: item.photos[0].url,
+                url: '//abc.com'
+              }
+            })
+          self.list[self.kind] = r.slice(0, 9)
+        } else {
+          self.list[self.kind] = []
+        }
+      }
     }
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '@/assets/css/index/artistic.scss';
+</style>

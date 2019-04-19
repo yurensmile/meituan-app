@@ -172,10 +172,11 @@ export default {
         if (valid) {
           self.$axios
             .post('/users/signup', {
+              // 编码处理中文
               username: window.encodeURIComponent(self.ruleForm.name),
               password: CryptoJS.MD5(self.ruleForm.pwd).toString(),
               email: self.ruleForm.email,
-              code: self.releForm.code
+              code: self.ruleForm.code
             })
             .then(({ status, data }) => {
               if (status === 200) {

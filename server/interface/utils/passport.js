@@ -4,9 +4,13 @@ import UserModel from '../../dbs/models/users'
 
 passport.use(new LocalStrategy(function(username, password, done){
   let where = {
-    username
+    username:'neo'
   };
   let result = UserModel.findOne(where)
+  console.log('result: ' + Object.keys(result))
+  console.log('result username: ' + result.username)
+  console.log('result email: ' + result.email)
+  console.log('password: '+ password)
   if(result != null) {
     if(result.password === password) {
       return done(null, result)
@@ -14,7 +18,7 @@ passport.use(new LocalStrategy(function(username, password, done){
       return done(null, false, '密码错误')
     }
   }else {
-    return done(null, fase, '用户不存在')
+    return done(null, false, '用户不存在')
   }
 }))
 

@@ -14,9 +14,9 @@
         />
       </div>
       <div class="form">
-        <h4 v-if="eooor" class="tips"><i />{{ error }}</h4>
+        <h4 v-if="error" class="tips"><i />{{ error }}</h4>
         <p><span>账号登录</span></p>
-        <el-input v-model="username" prefix-icon="prefile" />
+        <el-input v-model="username" prefix-icon="profile" />
         <el-input v-model="password" prefix-icon="password" type="password" />
         <div class="foot">
           <el-checkbox v-model="checked">7天自动登录</el-checkbox>
