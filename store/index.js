@@ -13,6 +13,8 @@ const store = () =>
     },
     actions: {
       async nuxtServerInit({ commit }, { req, app }) {
+        // const cityPos = store.state.geo.position.city
+
         const {
           status,
           data: { province, city }
