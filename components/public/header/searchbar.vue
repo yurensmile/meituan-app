@@ -24,12 +24,16 @@
               v-for="(item, idx) in $store.state.home.hotPlace.slice(0, 5)"
               :key="idx"
             >
-              {{ item.name }}
+              <a :href="'/products?keyword=' + encodeURIComponent(item.name)">
+                {{ item.name }}
+              </a>
             </dd>
           </dl>
           <dl v-if="isSearchList" class="searchList">
             <dd v-for="(item, idx) in searchList" :key="idx">
-              {{ item.name }}
+              <a :href="'/products?keyword=' + encodeURIComponent(item.name)">
+                {{ item.name }}
+              </a>
             </dd>
           </dl>
         </div>
@@ -37,6 +41,7 @@
           <a
             v-for="(item, idx) in $store.state.home.hotPlace.slice(0, 5)"
             :key="idx"
+            :href="'/products?keyword=' + encodeURIComponent(item.name)"
           >
             {{ item.name }}
           </a>
@@ -94,6 +99,7 @@ export default {
   computed: {
     isHotPlace: function() {
       return this.isFocus && !this.search
+      // return true
     },
     isSearchList: function() {
       return this.isFocus && this.search
@@ -104,7 +110,11 @@ export default {
       this.isFocus = true
     },
     blur: function() {
-      this.isFocus = false
+      const self = this
+      // 不延时，无法跳转
+      setTimeout(function() {
+        self.isFocus = false
+      }, 200)
     },
     input: _.debounce(async function() {
       const self = this
@@ -122,7 +132,7 @@ export default {
       if (status === 200) {
         self.searchList = top.slice(0, 10)
       }
-    }, 200)
+    }, 100)
   }
 }
 </script>
