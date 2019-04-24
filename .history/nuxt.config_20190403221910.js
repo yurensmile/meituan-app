@@ -33,14 +33,16 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/element-ui'],
+  plugins: [
+    '@/plugins/element-ui',
+    ],
 
   /*
    ** Nuxt.js modules
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
     // '@nuxtjs/pwa'
   ],
   /*
@@ -68,8 +70,8 @@ module.exports = {
           loader: 'eslint-loader',
           exclude: /(node_modules)/,
           // 出现了delete 'cr'的错误，通过StackOverflow查询得到解决办法
-          options: {
-            fix: true
+          options:{
+            fix:true
           }
         })
       }

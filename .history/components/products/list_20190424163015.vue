@@ -11,7 +11,12 @@
       </dd>
     </dl>
     <ul>
-      <Item v-for="(item, idx) in list" :key="idx" :meta="item" />
+      <Item
+        v-for="(item, idx) in list"
+        :key="idx"
+        :meta="item"
+        @mouseenter="over(item)"
+      />
     </ul>
   </div>
 </template>
@@ -61,6 +66,10 @@ export default {
     return { items: data.list }
   },
   methods: {
+    over: function(item) {
+      console.log('list: ' + item.location)
+      this.$emit('curLoc', item.location)
+    },
     navSelect: function(item, nav) {
       console.log(this.list)
       nav.forEach(element => {

@@ -62,18 +62,12 @@ export default {
   },
   methods: {
     navSelect: function(item, nav) {
-      console.log(this.list)
       nav.forEach(element => {
         if (element.active) {
           element.active = false
         }
       })
       item.active = true
-      if (item.name === 's-default') {
-        this.list.sort((a, b) => {
-          return a.type.length - b.type.length
-        })
-      }
       if (item.name === 's-comment') {
         this.list.sort((a, b) => {
           return b.rate - a.rate
@@ -103,7 +97,6 @@ export default {
           this.list.sort((a, b) => {
             return a.price - b.price
           })
-        }
       }
     }
   }

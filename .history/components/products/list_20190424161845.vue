@@ -71,7 +71,7 @@ export default {
       item.active = true
       if (item.name === 's-default') {
         this.list.sort((a, b) => {
-          return a.type.length - b.type.length
+          return a.type.length -b.type.length
         })
       }
       if (item.name === 's-comment') {

@@ -11,7 +11,11 @@
       </dd>
     </dl>
     <ul>
-      <Item v-for="(item, idx) in list" :key="idx" :meta="item" />
+      <Item
+        v-for="(item, idx) in list"
+        :key="idx"
+        :meta="item"
+      />
     </ul>
   </div>
 </template>

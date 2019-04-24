@@ -5,7 +5,7 @@
         v-for="item in nav"
         :key="item.name"
         :class="[item.name, item.active ? 's-nav-active' : '']"
-        @click="navSelect(item, nav)"
+        @click="navSelect(e, item, nav)"
       >
         {{ item.txt }}
       </dd>
@@ -40,7 +40,7 @@ export default {
         },
         {
           name: 's-price',
-          txt: '价格排序',
+          txt: '价格最低',
           active: false
         },
         {
@@ -61,19 +61,14 @@ export default {
     return { items: data.list }
   },
   methods: {
-    navSelect: function(item, nav) {
-      console.log(this.list)
+    navSelect: function(e, item, nav) {
+      e.preventDefault()
       nav.forEach(element => {
         if (element.active) {
           element.active = false
         }
       })
       item.active = true
-      if (item.name === 's-default') {
-        this.list.sort((a, b) => {
-          return a.type.length - b.type.length
-        })
-      }
       if (item.name === 's-comment') {
         this.list.sort((a, b) => {
           return b.rate - a.rate
@@ -85,24 +80,22 @@ export default {
         })
       }
       if (item.name === 's-price') {
-        if (item.txt === '价格排序') {
-          item.txt = '价格最低'
-          this.list.sort((a, b) => {
-            return a.price - b.price
-          })
-          const style = document.createElement('style')
-          style.innerHTML = '.s-nav-active::after{border-top-color:green}'
-          document.head.appendChild(style)
-        } else if (item.txt === '价格最低') {
+        if (item.txt === '价格最低') {
           item.txt = '价格最高'
           this.list.sort((a, b) => {
             return b.price - a.price
           })
+          const style = document.createElement('style')
+          style.innerHTML = '.s-nav-active::before{borderBottomColor:green}' // 添加样式内容的话也可以用上面提到过的`insertRule`,相对例子里的硬编码会更优雅点。
+          document.head.appendChild(style)
         } else {
           item.txt = '价格最低'
           this.list.sort((a, b) => {
             return a.price - b.price
           })
+          const style = document.createElement('style')
+          style.innerHTML = '.s-nav-active::after{border-top-color:green}' // 添加样式内容的话也可以用上面提到过的`insertRule`,相对例子里的硬编码会更优雅点。
+          document.head.appendChild(style)
         }
       }
     }
