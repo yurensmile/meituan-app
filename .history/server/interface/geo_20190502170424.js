@@ -15,7 +15,9 @@ router.get('/getPosition', async ctx => {
   } = await axios.get( `http://cp-tools.cn/geo/getPosition?sign=${sign}`)
   if(status1===200){
     let str = await axios.get(`http://ip.taobao.com/service/getIpInfo.php?ip=${ip}`)
-    let {status,data:{code,data:{region,city}}} = str
+    console.log("str")
+    console.log( str)
+    let {status,data:{code,data:{region,city}}} = JSON.parse(str)
     console.log(code)
     if (status===200 && code=== 0)  {
       ctx.body = {

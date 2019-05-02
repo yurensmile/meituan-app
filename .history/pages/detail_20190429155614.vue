@@ -46,7 +46,7 @@ export default {
   },
   computed: {
     canOrder: function() {
-      return this.list.filter(item => item.photos.length).length + 1
+      return this.list.filter(item => item.photos.length).length
     }
   },
   async asyncData(ctx) {

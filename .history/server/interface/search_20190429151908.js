@@ -59,15 +59,14 @@ router.get('/products', async ctx => {
   if (status===200) {
     ctx.body={
       product,
-      // 登录鉴定
       more: !ctx.isAuthenticated() ? more : [],
-      login: !ctx.isAuthenticated()
+      login: ctx.isAuthenticated()
     }
   }else {
     ctx.body ={
       product: {},
-      more: !ctx.isAuthenticated() ? more : [],
-      login: !ctx.isAuthenticated()
+      more: ctx.isAuthenticated() ? more : [],
+      login: ctx.isAuthenticated()
     }
   }
 })

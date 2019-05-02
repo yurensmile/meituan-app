@@ -15,10 +15,10 @@
         <h3>商家团购及优惠</h3>
       </el-col>
     </el-row>
-    <el-row v-if="canOrder || login">
+    <el-row v-if="canOrder || !login">
       <el-col :span="24">
         <!-- 4.29数据库读取有问题，待修正后将！lgoin改为login -->
-        <list v-if="login" :list="list" />
+        <list v-if="!login" :list="list" />
         <div v-else class="deal-need-login">
           <img
             src="//p0.meituan.net/codeman/56a7d5abcb5ce3d90fc91195e5b5856911194.png"
@@ -46,7 +46,7 @@ export default {
   },
   computed: {
     canOrder: function() {
-      return this.list.filter(item => item.photos.length).length + 1
+      return this.list.filter(item => item.photos.length).length
     }
   },
   async asyncData(ctx) {

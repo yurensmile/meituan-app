@@ -37,7 +37,7 @@ export default {
       const {
         status,
         data: { code, id }
-      } = await this.$axios.get('/cart/create', {
+      } = await this.$axios.post('/cart/create', {
         params: {
           id: Math.random()
             .toString()

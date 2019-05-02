@@ -14,10 +14,9 @@ router.get('/getPosition', async ctx => {
     }
   } = await axios.get( `http://cp-tools.cn/geo/getPosition?sign=${sign}`)
   if(status1===200){
-    let str = await axios.get(`http://ip.taobao.com/service/getIpInfo.php?ip=${ip}`)
-    let {status,data:{code,data:{region,city}}} = str
-    console.log(code)
-    if (status===200 && code=== 0)  {
+    let {code:status,data:{region,city}} = await axios.get(`http://ip.taobao.com/service/getIpInfo.php?ip=${ip}`)
+    console.log(status)
+    if (status === 0)  {
       ctx.body = {
         province:region,
         city
@@ -48,7 +47,6 @@ router.get('/province', async ctx => {
 })
 
 router.get('/province/:id', async ctx => {
-  // axios自身返回status
   let {status, data: {city}} = await axios.get(`http://cp-tools.cn/geo/province/${ctx.params.id}?sign=${sign}`)
   if(status === 200) {
     ctx.body = {

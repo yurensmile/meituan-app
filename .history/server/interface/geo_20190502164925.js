@@ -8,16 +8,16 @@ const sign = '8e48004fd0e582f26fa50affe7e15813'
 
 router.get('/getPosition', async ctx => {
   let {
-    status:status1,
+    status1,
     data:{
       ip
     }
   } = await axios.get( `http://cp-tools.cn/geo/getPosition?sign=${sign}`)
-  if(status1===200){
-    let str = await axios.get(`http://ip.taobao.com/service/getIpInfo.php?ip=${ip}`)
-    let {status,data:{code,data:{region,city}}} = str
-    console.log(code)
-    if (status===200 && code=== 0)  {
+  // status1 is undefined ,its really strange
+  console.log(ip+"  "+status1)
+  if(status1===undefined){
+    let {code:status,data:{region,city}} = await axios.get(`http://ip.taobao.com/service/getIpInfo.php?ip=${ip}`)
+    if (status === 0)  {
       ctx.body = {
         province:region,
         city
@@ -25,7 +25,7 @@ router.get('/getPosition', async ctx => {
     } else {
       ctx.body = {
         province:"北京",
-        city: "北京"
+        city
       }
   }
   }
@@ -48,7 +48,6 @@ router.get('/province', async ctx => {
 })
 
 router.get('/province/:id', async ctx => {
-  // axios自身返回status
   let {status, data: {city}} = await axios.get(`http://cp-tools.cn/geo/province/${ctx.params.id}?sign=${sign}`)
   if(status === 200) {
     ctx.body = {

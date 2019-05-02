@@ -37,14 +37,14 @@ export default {
       const {
         status,
         data: { code, id }
-      } = await this.$axios.get('/cart/create', {
+      } = await this.$axios.post('/cart/create', {
         params: {
           id: Math.random()
             .toString()
             .slice(3, 9),
           detail: {
             name: self.meta.name,
-            price: self.meta.biz_ext.cost || 100,
+            price: self.meta.biz_ext.cost,
             imgs: self.meta.photos
           }
         }
