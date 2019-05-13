@@ -11,14 +11,13 @@ router.get('/createOrder', async ctx => {
     let time = Date()
     let orderID = md5(Math.random()*1000 + time).toString()
     // 登录验证
-    if(ctx.isAuthenticated()){
+    if(!ctx.isAuthenticated()){
         ctx.body = {
             code: -1,
             msg: 'please login'
         }
     } else {
         let findCart = await Cart.findOne({cartNo:id})
-        console.log(findCart)
         let order = new Order({
             id: orderID,
             count,

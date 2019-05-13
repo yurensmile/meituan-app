@@ -45,6 +45,7 @@ router.post('/signup', async (ctx) => {
     return
   }
   let nuser = await User.create({username, password, email})
+  console.log(nuser)
   if (nuser) {
     let res = await axios.post('/users/signin', {username, password})
     if (res.data  && res.data.code === 0) {
@@ -70,6 +71,7 @@ router.post('/signup', async (ctx) => {
 
 router.post('/signin', async (ctx, next) => {
   return Passport.authenticate('local', function(err, user, info, status){
+    console.log("user: "+user)
     if(err){
       ctx.body = {
         code: -1,
@@ -151,7 +153,7 @@ router.get('/exit', async (ctx, next) => {
 
 
 router.get('/getUser', async (ctx) => {
-  if (ctx.isAuthenticated()) {
+  if (!ctx.isAuthenticated()) {
     const {username, email} = ctx.session.passport.user
     ctx.body = {
       user:username,

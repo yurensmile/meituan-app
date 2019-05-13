@@ -18,7 +18,6 @@ router.get('/createOrder', async ctx => {
         }
     } else {
         let findCart = await Cart.findOne({cartNo:id})
-        console.log(findCart)
         let order = new Order({
             id: orderID,
             count,

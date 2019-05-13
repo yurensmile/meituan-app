@@ -1,6 +1,7 @@
 // import koaBody from 'koa-body'
-import consola from 'consola'
-import { Nuxt, Builder } from 'nuxt'
+const consola = require('consola')
+const { Nuxt, Builder } = require('nuxt')
+
 import Koa from 'koa'
 import mongoose from 'mongoose'
 import session from 'koa-generic-session'
@@ -19,8 +20,8 @@ import order from './interface/order'
 const app = new Koa()
 
 app.keys = ['mt', 'keyskeys']
-app.use(session({key: 'mt', prefix: 'mt:uid', store: new Redis()}))
 app.proxy = true
+app.use(session({key: 'mt', prefix: 'mt:uid', store: new Redis()}))
 app.use(bodyParser({
   extendTypes:['json','form','text']
 }))

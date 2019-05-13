@@ -2,11 +2,15 @@ import passport from 'koa-passport'
 import LocalStrategy from 'passport-local'
 import UserModel from '../../dbs/models/users'
 
-passport.use(new LocalStrategy(async function(username, password, done){
+passport.use(new LocalStrategy(function(username, password, done){
   let where = {
-    username
+    username:'neo'
   };
-  let result = await UserModel.findOne({username:username.toString()})
+  let result = UserModel.findOne(where)
+  console.log('result: ' + Object.keys(result))
+  console.log('result username: ' + result.username)
+  console.log('result email: ' + result.email)
+  console.log('password: '+ password)
   if(result != null) {
     if(result.password === password) {
       return done(null, result)

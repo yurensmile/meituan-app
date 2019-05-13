@@ -1,9 +1,10 @@
 import Router from 'koa-router'
 import axios from './utils/axios'
-import sign from './utils/sign'
-
+import Province from '../dbs/models/province'
 
 let router = new Router({prefix: '/geo'})
+
+const sign = '8e48004fd0e582f26fa50affe7e15813'
 
 router.get('/getPosition', async ctx => {
   let {

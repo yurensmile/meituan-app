@@ -6,7 +6,13 @@ passport.use(new LocalStrategy(async function(username, password, done){
   let where = {
     username
   };
+  console.log("before username: " + username)
+  console.log("before password: " + password)
+  console.log("before where: " + Object.keys(where))
   let result = await UserModel.findOne({username:username.toString()})
+  console.log('result: ' + Object.keys(result))
+  console.log('result username: ' + result.username)
+  console.log('result password: '+ result.password)
   if(result != null) {
     if(result.password === password) {
       return done(null, result)

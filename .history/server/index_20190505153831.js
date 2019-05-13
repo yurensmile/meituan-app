@@ -1,6 +1,7 @@
 // import koaBody from 'koa-body'
-import consola from 'consola'
-import { Nuxt, Builder } from 'nuxt'
+const consola = require('consola')
+const { Nuxt, Builder } = require('nuxt')
+
 import Koa from 'koa'
 import mongoose from 'mongoose'
 import session from 'koa-generic-session'
